@@ -1,0 +1,34 @@
+# .NET build output
+[Bb]in/
+[Oo]bj/
+TestResults/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# IDE state
+.vs/
+.idea/
+
+# Local configuration, secrets, and data
+appsettings.Local.json
+appsettings.Production.json
+*.db
+*.db-shm
+*.db-wal
+*.db-journal
+*.pfx
+*.pem
+*.key
+data/
+logs/
+
+# Node / UI build output
+ui/node_modules/
+ui/dist/
+ui/.next/
+
+# Vendor SDK binaries: install locally only, subject to its licence.
+vendor/
+sdk/
