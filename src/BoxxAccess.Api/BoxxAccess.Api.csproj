@@ -1,5 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
+  <PropertyGroup>
+    <StaticWebAssetsEnabled>false</StaticWebAssetsEnabled>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="wwwroot\**" />
+  </ItemGroup>
+
   <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore" />
   </ItemGroup>
@@ -10,5 +18,25 @@
     <ProjectReference Include="..\BoxxAccess.Infrastructure\BoxxAccess.Infrastructure.csproj" />
     <ProjectReference Include="..\BoxxAccess.Zkteco\BoxxAccess.Zkteco.csproj" />
   </ItemGroup>
+
+  <Target Name="BuildUi" Condition="'$(SkipUiBuild)' != 'true'">
+    <Exec Command="pnpm install --ignore-scripts" WorkingDirectory="$(MSBuildProjectDirectory)\..\..\ui" />
+    <Exec Command="pnpm run build" WorkingDirectory="$(MSBuildProjectDirectory)\..\..\ui" />
+    <RemoveDir Directories="$(MSBuildProjectDirectory)\wwwroot" Condition="Exists('$(MSBuildProjectDirectory)\wwwroot')" />
+    <ItemGroup>
+      <UiOutputFiles Include="$(MSBuildProjectDirectory)\..\..\ui\out\**\*.*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(UiOutputFiles)" DestinationFolder="$(MSBuildProjectDirectory)\wwwroot\%(RecursiveDir)" SkipUnchangedFiles="true" />
+  </Target>
+
+  <Target Name="AddUiFilesToPublish" BeforeTargets="ComputeFilesToPublish" DependsOnTargets="BuildUi" Condition="'$(SkipUiBuild)' != 'true'">
+    <ItemGroup>
+      <BuiltUiFiles Include="$(MSBuildProjectDirectory)\wwwroot\**\*.*" />
+      <ResolvedFileToPublish Include="@(BuiltUiFiles)">
+        <RelativePath>wwwroot\%(RecursiveDir)%(Filename)%(Extension)</RelativePath>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </ResolvedFileToPublish>
+    </ItemGroup>
+  </Target>
 
 </Project>

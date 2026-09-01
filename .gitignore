@@ -28,6 +28,8 @@ logs/
 ui/node_modules/
 ui/dist/
 ui/.next/
+ui/out/
+src/BoxxAccess.Api/wwwroot/
 
 # Vendor SDK binaries: install locally only, subject to its licence.
 vendor/
