@@ -4,174 +4,23 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/*
- * BoxxCentral design tokens — the single source of truth for the palette.
- * Design system: dark, high-energy, premium. Vibrant red is reserved for
- * CTAs and active states; Anton drives display type, Figtree drives body.
- * Never use raw hex values in components; always consume these tokens
- * through Tailwind utilities (bg-boxx-night, text-boxx-red, etc.).
- */
 @theme {
-  /* Canvas & surfaces (black family) */
-  --color-boxx-night: #141414; /* page canvas */
-  --color-boxx-coal: #1e1e1e; /* raised surfaces: cards, panels */
-  --color-boxx-slate: #242424; /* elevated surfaces, hover states */
-  --color-boxx-line: #333333; /* hairline borders, dividers */
-
-  /* Brand red (CTAs and accents only — used sparingly) */
-  --color-boxx-red: #fa0306;
-  --color-boxx-red-deep: #d10205; /* pressed */
-  --color-boxx-red-glow: #ff3033; /* hover / highlights on dark */
-
-  /* Type (white family) */
-  --color-boxx-white: #ffffff; /* headings, primary text */
-  --color-boxx-mist: #b3b3b3; /* body copy, secondary text */
-  --color-boxx-dim: #8a8a8a; /* captions, placeholder labels */
-
-  /* Typography — Anton for display, Figtree for everything else */
-  --font-sans: var(--font-figtree), ui-sans-serif, system-ui, sans-serif;
-  --font-heading: var(--font-anton), var(--font-figtree), sans-serif;
-
-  /* The single sanctioned shadow: the luminous primary-CTA glow */
-  --shadow-glow: 0px 5px 25px rgb(250 3 6 / 0.25);
-
-  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
 }
 
 html {
   scroll-behavior: smooth;
 }
 
-body {
-  background-color: var(--color-boxx-night);
-  color: var(--color-boxx-mist);
-  font-family: var(--font-sans);
-}
-
 ::selection {
-  background-color: var(--color-boxx-red);
-  color: var(--color-boxx-white);
+  background-color: var(--primary);
+  color: var(--primary-foreground);
 }
 
 /*
- * Outlined display type — transparent fill, hairline stroke. Used for the
- * giant footer wordmark; the stroke keeps it present without shouting.
- */
-.text-stroke,
-.text-stroke-white {
-  color: transparent;
-  -webkit-text-stroke-width: clamp(1px, 0.2vw, 1.5px);
-}
-
-.text-stroke {
-  -webkit-text-stroke-color: var(--color-boxx-line);
-}
-
-.text-stroke-white {
-  -webkit-text-stroke-color: var(--color-boxx-white);
-}
-
-/*
- * Scroll-reveal animation, driven by the <Reveal> component.
- * Elements start offset + transparent and settle into place once they
- * intersect the viewport. `data-reveal-variant` picks the entrance
- * direction; disabled entirely for reduced-motion users.
- */
-[data-reveal] {
-  opacity: 0;
-  transform: translateY(28px);
-  transition:
-    opacity 700ms var(--ease-standard),
-    transform 700ms var(--ease-standard);
-}
-
-[data-reveal][data-reveal-variant="down"] {
-  transform: translateY(-28px);
-}
-
-[data-reveal][data-reveal-variant="left"] {
-  transform: translateX(-32px);
-}
-
-[data-reveal][data-reveal-variant="right"] {
-  transform: translateX(32px);
-}
-
-[data-reveal][data-reveal-variant="scale"] {
-  transform: scale(0.94);
-}
-
-[data-reveal][data-reveal-variant="fade"] {
-  transform: none;
-}
-
-/*
- * Higher-specificity tie-breaker (two attribute selectors, same as the
- * variant rules above) placed last so it always wins the cascade and
- * resets every variant back to its resting position once visible.
- */
-[data-reveal="visible"][data-reveal-variant] {
-  opacity: 1;
-  transform: none;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-  [data-reveal],
-  [data-reveal][data-reveal-variant] {
-    opacity: 1;
-    transform: none;
-    transition: none;
-  }
-}
-
-/*
- * Atmosphere filmstrip — a full-bleed band of photos drifting slowly
- * sideways like a strip of film. The track holds two copies of the same
- * sequence, so a -50% translate loops seamlessly. Pauses on hover;
- * reduced-motion users get a plain horizontal scroller instead.
- */
-@keyframes marquee-drift {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-50%);
-  }
-}
-
-.marquee-track {
-  animation: marquee-drift 55s linear infinite;
-}
-
-.marquee:hover .marquee-track {
-  animation-play-state: paused;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .marquee {
-    overflow-x: auto;
-  }
-  .marquee-track {
-    animation: none;
-  }
-}
-
-/* Hides the scrollbar on a horizontally-scrollable strip (e.g. LoungeBoxx
- * menu's category filter) while keeping it scrollable by touch/wheel. */
-.no-scrollbar {
-  scrollbar-width: none; /* Firefox */
-}
-
-.no-scrollbar::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Edge */
-}
-
-/*
- * shadcn semantic tokens, mapped onto the BoxxCentral palette.
- * The site ships a single, permanent dark scheme.
+ * shadcn semantic tokens, mapped onto the BoxxAccess palette.
+ * Light mode is the default; .dark on <html> switches the scheme.
  */
 @theme inline {
   --color-sidebar-ring: var(--sidebar-ring);
@@ -182,11 +31,6 @@ body {
   --color-sidebar-primary: var(--sidebar-primary);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar: var(--sidebar);
-  --color-chart-5: var(--chart-5);
-  --color-chart-4: var(--chart-4);
-  --color-chart-3: var(--chart-3);
-  --color-chart-2: var(--chart-2);
-  --color-chart-1: var(--chart-1);
   --color-ring: var(--ring);
   --color-input: var(--input);
   --color-border: var(--border);
@@ -209,43 +53,67 @@ body {
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) * 1.4);
-  --radius-2xl: calc(var(--radius) * 1.8);
-  --radius-3xl: calc(var(--radius) * 2.2);
-  --radius-4xl: calc(var(--radius) * 2.6);
 }
 
 :root {
-  --radius: 0.75rem;
-  --background: var(--color-boxx-night);
-  --foreground: var(--color-boxx-white);
-  --card: var(--color-boxx-coal);
-  --card-foreground: var(--color-boxx-white);
-  --popover: var(--color-boxx-coal);
-  --popover-foreground: var(--color-boxx-white);
-  --primary: var(--color-boxx-red);
-  --primary-foreground: var(--color-boxx-white);
-  --secondary: var(--color-boxx-slate);
-  --secondary-foreground: var(--color-boxx-white);
-  --muted: var(--color-boxx-slate);
-  --muted-foreground: var(--color-boxx-mist);
-  --accent: var(--color-boxx-slate);
-  --accent-foreground: var(--color-boxx-white);
-  --destructive: var(--color-boxx-red);
-  --border: var(--color-boxx-line);
-  --input: var(--color-boxx-line);
+  --radius: 0.6rem;
+  --header-height: 3.5rem;
+  --background: #ffffff;
+  --foreground: #141414;
+  --card: #ffffff;
+  --card-foreground: #141414;
+  --popover: #ffffff;
+  --popover-foreground: #141414;
+  --primary: #fa0306;
+  --primary-foreground: #ffffff;
+  --secondary: #f5f5f5;
+  --secondary-foreground: #141414;
+  --muted: #f5f5f5;
+  --muted-foreground: #6b6b6b;
+  --accent: #f0f0f0;
+  --accent-foreground: #141414;
+  --destructive: #fa0306;
+  --border: #e5e5e5;
+  --input: #e5e5e5;
   --ring: rgb(250 3 6 / 0.5);
-  --chart-1: var(--color-boxx-red);
-  --chart-2: var(--color-boxx-red-glow);
-  --chart-3: var(--color-boxx-mist);
-  --chart-4: var(--color-boxx-dim);
-  --chart-5: var(--color-boxx-slate);
-  --sidebar: var(--color-boxx-coal);
-  --sidebar-foreground: var(--color-boxx-white);
-  --sidebar-primary: var(--color-boxx-red);
-  --sidebar-primary-foreground: var(--color-boxx-white);
-  --sidebar-accent: var(--color-boxx-slate);
-  --sidebar-accent-foreground: var(--color-boxx-white);
-  --sidebar-border: var(--color-boxx-line);
+  /* Sidebar is permanently dark, independent of light/dark mode. */
+  --sidebar: #141414;
+  --sidebar-foreground: #ffffff;
+  --sidebar-primary: #fa0306;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #242424;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: #2b2b2b;
+  --sidebar-ring: rgb(250 3 6 / 0.5);
+}
+
+.dark {
+  --background: #141414;
+  --foreground: #ffffff;
+  --card: #1e1e1e;
+  --card-foreground: #ffffff;
+  --popover: #1e1e1e;
+  --popover-foreground: #ffffff;
+  --primary: #fa0306;
+  --primary-foreground: #ffffff;
+  --secondary: #242424;
+  --secondary-foreground: #ffffff;
+  --muted: #242424;
+  --muted-foreground: #b3b3b3;
+  --accent: #242424;
+  --accent-foreground: #ffffff;
+  --destructive: #fa0306;
+  --border: #333333;
+  --input: #333333;
+  --ring: rgb(250 3 6 / 0.5);
+  /* Same values as :root — the sidebar doesn't change with light/dark mode. */
+  --sidebar: #141414;
+  --sidebar-foreground: #ffffff;
+  --sidebar-primary: #fa0306;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #242424;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: #2b2b2b;
   --sidebar-ring: rgb(250 3 6 / 0.5);
 }
 
@@ -254,7 +122,7 @@ body {
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background;
+    @apply bg-background text-foreground;
   }
   html {
     @apply font-sans;
